@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Runemark Studio/Freebies/PolyDesert Mobile/Materials.meta
 guid: 515eee979c2a8c6438cf9142e584024b
 folderAsset: yes
 timeCreated: 1554712616
 licenseType: Store
+========
+guid: 1e40fe6e347b775468c8443014223ee4
+folderAsset: yes
+>>>>>>>> origin/Kamil:Assets/TutorialInfo/Icons.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
