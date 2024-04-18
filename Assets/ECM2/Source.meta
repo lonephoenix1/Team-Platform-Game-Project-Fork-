@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/ECM2/Source.meta
 guid: 29235614c212e3740961eedd10e99cca
+=======
+guid: 1e40fe6e347b775468c8443014223ee4
+>>>>>>> origin/Luke:Assets/TutorialInfo/Icons.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

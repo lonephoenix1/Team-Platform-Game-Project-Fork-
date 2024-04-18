@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/EmaceArt - raft on the desert/Skybox/Cartoon Airbrush Day NoSun/Cartoon_Airbrush_Day_NoSun.meta
 guid: a8e495b20bbc64cadb002bcc499944e5
 folderAsset: yes
 timeCreated: 1425917267
 licenseType: Store
+========
+guid: 17a86ad1fa19cc042a4e625ff4b130b2
+folderAsset: yes
+>>>>>>>> origin/Luke:Assets/TutorialInfo/Scripts.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
