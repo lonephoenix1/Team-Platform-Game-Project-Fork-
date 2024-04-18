@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/ECM2/Shared Assets/Models/UnityCharacter/Models.meta
 guid: 63a9b545231dae54dae6e47768cf431e
 folderAsset: yes
 timeCreated: 1464084522
 licenseType: Store
+========
+guid: 1e40fe6e347b775468c8443014223ee4
+folderAsset: yes
+>>>>>>>> origin/main:Assets/TutorialInfo/Icons.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

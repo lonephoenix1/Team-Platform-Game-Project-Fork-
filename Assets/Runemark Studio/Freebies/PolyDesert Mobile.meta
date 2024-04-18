@@ -1,15 +1,22 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Runemark Studio/Freebies/PolyDesert Mobile.meta
+=======
+>>>>>>> origin/main
 guid: 2570d6eea2a2dbf4bac076d988b306d4
 folderAsset: yes
 timeCreated: 1554712592
 licenseType: Store
+<<<<<<< HEAD
 ========
 guid: 7c378a0fe2dd3994a88a3292a6d45e60
 folderAsset: yes
 >>>>>>>> origin/Luke:Assets/TutorialInfo/Scripts/Editor.meta
 DefaultImporter:
   externalObjects: {}
+=======
+DefaultImporter:
+>>>>>>> origin/main
   userData: 
   assetBundleName: 
   assetBundleVariant: 
