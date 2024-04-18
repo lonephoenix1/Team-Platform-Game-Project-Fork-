@@ -1,15 +1,22 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/ECM2/Shared Assets/Models/UnityCharacter/Models/Textures.meta
+=======
+>>>>>>> origin/WiktorG
 guid: 45e9be507fd6a4641b3047eec21530fe
 folderAsset: yes
 timeCreated: 1464084523
 licenseType: Store
+<<<<<<< HEAD
 ========
 guid: 7c378a0fe2dd3994a88a3292a6d45e60
 folderAsset: yes
 >>>>>>>> origin/main:Assets/TutorialInfo/Scripts/Editor.meta
 DefaultImporter:
   externalObjects: {}
+=======
+DefaultImporter:
+>>>>>>> origin/WiktorG
   userData: 
   assetBundleName: 
   assetBundleVariant: 

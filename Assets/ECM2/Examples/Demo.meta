@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/ECM2/Examples/Demo.meta
 guid: 475ff761b0b75d14db323dd54effdaac
 ========
 guid: e962d3073335e3047b85297bdd924981
 >>>>>>>> origin/main:Assets/TutorialInfo.meta
+=======
+guid: 475ff761b0b75d14db323dd54effdaac
+>>>>>>> origin/WiktorG
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

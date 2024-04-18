@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Runemark Studio/Freebies/Polygon Desert Pack.meta
 guid: 16d1ccff0cdadfe45a0b730c8643753f
 folderAsset: yes
 timeCreated: 1512679276
 licenseType: Store
+========
+guid: 7c378a0fe2dd3994a88a3292a6d45e60
+folderAsset: yes
+>>>>>>>> origin/WiktorG:Assets/TutorialInfo/Scripts/Editor.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

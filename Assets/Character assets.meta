@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Character assets.meta
 guid: 8a258ea20ccbae54a83b8ec2d5502112
+=======
+guid: e962d3073335e3047b85297bdd924981
+>>>>>>> origin/WiktorG:Assets/TutorialInfo.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

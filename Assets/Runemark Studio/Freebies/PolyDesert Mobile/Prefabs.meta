@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Runemark Studio/Freebies/PolyDesert Mobile/Prefabs.meta
 guid: e7b7b3c79efa5a04ba99fcd56d357ab0
 folderAsset: yes
 timeCreated: 1554712817
 licenseType: Store
+========
+guid: 17a86ad1fa19cc042a4e625ff4b130b2
+folderAsset: yes
+>>>>>>>> origin/WiktorG:Assets/TutorialInfo/Scripts.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

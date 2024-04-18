@@ -1,15 +1,22 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Runemark Studio/Freebies/PolyDesert Mobile/Materials.meta
+=======
+>>>>>>> origin/WiktorG
 guid: 515eee979c2a8c6438cf9142e584024b
 folderAsset: yes
 timeCreated: 1554712616
 licenseType: Store
+<<<<<<< HEAD
 ========
 guid: 1e40fe6e347b775468c8443014223ee4
 folderAsset: yes
 >>>>>>>> origin/Kamil:Assets/TutorialInfo/Icons.meta
 DefaultImporter:
   externalObjects: {}
+=======
+DefaultImporter:
+>>>>>>> origin/WiktorG
   userData: 
   assetBundleName: 
   assetBundleVariant: 
