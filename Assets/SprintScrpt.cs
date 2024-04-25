@@ -15,4 +15,8 @@ public class SprintScrpt : MonoBehaviour
     {
         
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
 }
