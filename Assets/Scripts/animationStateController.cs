@@ -5,6 +5,7 @@ using UnityEngine;
 public class animationStateController : MonoBehaviour
 {
     Animator animator;
+    bool isJumping = false;
 
     void Start()
     {
@@ -17,37 +18,49 @@ public class animationStateController : MonoBehaviour
         bool isWalking = animator.GetBool("isWalking");
         bool movePressed = Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("d") || Input.GetKey("s");
         bool runPressed = Input.GetKey("left shift");
-        bool jumpPressed = Input.GetKeyDown(KeyCode.Space); // SprawdŸ, czy spacja zosta³a naciœniêta
+        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
-        // Jeœli wciœniêty jest klawisz W, A, S, D
+        if (jumpPressed && !isJumping)
+        {
+            isJumping = true;
+
+            if (isRunning)
+            {
+                animator.SetTrigger("isRunningJump");
+            }
+            else if (isWalking)
+            {
+                animator.SetTrigger("isWalkingJump");
+            }
+            else
+            {
+                animator.SetTrigger("isIdleJump");
+            }
+        }
+        if (!Input.GetKey(KeyCode.Space))
+        {
+            isJumping = false;
+        }
+
         if (!isWalking && movePressed)
         {
             animator.SetBool("isWalking", true);
         }
-        // Jeœli gracz nie wciska przycisku W, A, S, D
         if (isWalking && !movePressed)
         {
             animator.SetBool("isWalking", false);
         }
-        // Jeœli gracz wciska klawisz W, A, S, D i lewy shift
         if (!isRunning && (movePressed && runPressed))
         {
             animator.SetBool("isRunning", true);
         }
-        // Jeœli gracz nie wciska przycisku W, A, S, D lub lewy shift
         if (isRunning && (!movePressed || !runPressed))
         {
             animator.SetBool("isRunning", false);
         }
-        // Jeœli gracz naciœnie spacjê i nie jest ju¿ w trakcie skoku
-        if (jumpPressed && !animator.GetBool("isJumping"))
-        {
-            animator.SetBool("isJumping", true); // Ustaw wartoœæ "isJumping" na true
-        }
-        else
-        {
-            animator.SetBool("isJumping", false); // Ustaw wartoœæ "isJumping" na false, jeœli gracz nie nacisn¹³ spacjê
-        }
     }
 }
+
+
+
 
