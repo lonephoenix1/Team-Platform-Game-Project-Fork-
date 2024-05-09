@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class animationStateController : MonoBehaviour
+public class AnimationStateController : MonoBehaviour
 {
     Animator animator;
     bool isJumping = false;
+    bool isLifting = false;
 
     void Start()
     {
@@ -19,47 +20,72 @@ public class animationStateController : MonoBehaviour
         bool movePressed = Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("d") || Input.GetKey("s");
         bool runPressed = Input.GetKey("left shift");
         bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        bool liftPressed = Input.GetKeyDown(KeyCode.E); // Check for 'E' key press
 
-        if (jumpPressed && !isJumping)
+        // Check if currently in lifting animation state
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
         {
-            isJumping = true;
-
-            if (isRunning)
-            {
-                animator.SetTrigger("isRunningJump");
-            }
-            else if (isWalking)
-            {
-                animator.SetTrigger("isWalkingJump");
-            }
-            else
-            {
-                animator.SetTrigger("isIdleJump");
-            }
-        }
-        if (!Input.GetKey(KeyCode.Space))
-        {
-            isJumping = false;
+            // Disable movement and jumping while lifting
+            movePressed = false;
+            runPressed = false;
+            jumpPressed = false;
         }
 
-        if (!isWalking && movePressed)
+        if (liftPressed)
         {
-            animator.SetBool("isWalking", true);
+            // Trigger the lifting animation
+            animator.SetTrigger("isLifting");
         }
-        if (isWalking && !movePressed)
+
+        // Jump logic (only allow if not lifting)
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
         {
-            animator.SetBool("isWalking", false);
+            if (jumpPressed && !isJumping)
+            {
+                isJumping = true;
+                if (isRunning)
+                {
+                    animator.SetTrigger("isRunningJump");
+                }
+                else if (isWalking)
+                {
+                    animator.SetTrigger("isWalkingJump");
+                }
+                else
+                {
+                    animator.SetTrigger("isIdleJump");
+                }
+            }
+            if (!Input.GetKey(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
-        if (!isRunning && (movePressed && runPressed))
+
+        // Movement animations (only allow if not lifting)
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
         {
-            animator.SetBool("isRunning", true);
-        }
-        if (isRunning && (!movePressed || !runPressed))
-        {
-            animator.SetBool("isRunning", false);
+            if (!isWalking && movePressed)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            if (isWalking && !movePressed)
+            {
+                animator.SetBool("isWalking", false);
+            }
+            if (!isRunning && (movePressed && runPressed))
+            {
+                animator.SetBool("isRunning", true);
+            }
+            if (isRunning && (!movePressed || !runPressed))
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
     }
 }
+
+
 
 
 
