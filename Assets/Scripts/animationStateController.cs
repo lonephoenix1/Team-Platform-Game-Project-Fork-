@@ -1,53 +1,111 @@
+using ECM2;
+using ECM2.Examples.PlanetWalk;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class animationStateController : MonoBehaviour
+public class AnimationStateController : MonoBehaviour
 {
     Animator animator;
+    bool isJumping = false;
+    bool isLifting = false;
+    public ECM2.Examples.ThirdPerson.ThirdPersonController move;
+    public Character myRb;
 
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
+    IEnumerator LiftWait()
+    {
+        yield return new WaitForSeconds(2.2f);
+        move.enabled = true;
+        myRb.enabled = true;
+    }
+
     void Update()
     {
+        // Pobieranie aktualnych informacji o animacji
+        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
         bool isRunning = animator.GetBool("isRunning");
         bool isWalking = animator.GetBool("isWalking");
         bool movePressed = Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("d") || Input.GetKey("s");
         bool runPressed = Input.GetKey("left shift");
-        bool jumpPressed = Input.GetKeyDown(KeyCode.Space); // SprawdŸ, czy spacja zosta³a naciœniêta
+        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        bool liftPressed = Input.GetKeyDown(KeyCode.E);
 
-        // Jeœli wciœniêty jest klawisz W, A, S, D
-        if (!isWalking && movePressed)
+        isLifting = currentStateInfo.IsTag("Lifting");
+
+        if (isLifting)
         {
-            animator.SetBool("isWalking", true);
+            movePressed = false;
+            runPressed = false;
+            jumpPressed = false;
         }
-        // Jeœli gracz nie wciska przycisku W, A, S, D
-        if (isWalking && !movePressed)
+
+        if (liftPressed && !isLifting)
         {
-            animator.SetBool("isWalking", false);
+            animator.SetTrigger("isLifting");
+            move.enabled = false;
+            myRb.enabled = false;
+            StartCoroutine(LiftWait());
         }
-        // Jeœli gracz wciska klawisz W, A, S, D i lewy shift
-        if (!isRunning && (movePressed && runPressed))
+
+        // Logika skoku 
+        if (!isLifting)
         {
-            animator.SetBool("isRunning", true);
+            if (jumpPressed && !isJumping)
+            {
+                isJumping = true;
+                if (isRunning)
+                {
+                    animator.SetTrigger("isRunningJump");
+                }
+                else if (isWalking)
+                {
+                    animator.SetTrigger("isWalkingJump");
+                }
+                else
+                {
+                    animator.SetTrigger("isIdleJump");
+                }
+            }
+            if (!Input.GetKey(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
-        // Jeœli gracz nie wciska przycisku W, A, S, D lub lewy shift
-        if (isRunning && (!movePressed || !runPressed))
+
+        // Animacje ruchu
+        if (!isLifting)
         {
-            animator.SetBool("isRunning", false);
-        }
-        // Jeœli gracz naciœnie spacjê i nie jest ju¿ w trakcie skoku
-        if (jumpPressed && !animator.GetBool("isJumping"))
-        {
-            animator.SetBool("isJumping", true); // Ustaw wartoœæ "isJumping" na true
-        }
-        else
-        {
-            animator.SetBool("isJumping", false); // Ustaw wartoœæ "isJumping" na false, jeœli gracz nie nacisn¹³ spacjê
+            if (!isWalking && movePressed)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            if (isWalking && !movePressed)
+            {
+                animator.SetBool("isWalking", false);
+            }
+            if (!isRunning && (movePressed && runPressed))
+            {
+                animator.SetBool("isRunning", true);
+            }
+            if (isRunning && (!movePressed || !runPressed))
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
 
