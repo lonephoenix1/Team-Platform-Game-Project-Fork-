@@ -1371,6 +1371,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1598852633 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8311480917143939703, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+  m_PrefabInstance: {fileID: 6096965842358834162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf2b4abd6d2ccc4696278ee934b3da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1598852634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6965898758389443423, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+  m_PrefabInstance: {fileID: 6096965842358834162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cf32970eac4c9498a96ba8d86aad38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1839045756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,6 +1751,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1844458574289530098, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+      propertyPath: move
+      value: 
+      objectReference: {fileID: 1598852633}
+    - target: {fileID: 1844458574289530098, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+      propertyPath: myRb
+      value: 
+      objectReference: {fileID: 1598852634}
     - target: {fileID: 6013740984823241027, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
       propertyPath: m_Name
       value: HumanMale_Character_FREE

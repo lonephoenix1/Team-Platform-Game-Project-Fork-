@@ -1,3 +1,5 @@
+using ECM2;
+using ECM2.Examples.PlanetWalk;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,38 +9,52 @@ public class AnimationStateController : MonoBehaviour
     Animator animator;
     bool isJumping = false;
     bool isLifting = false;
+    public ECM2.Examples.ThirdPerson.ThirdPersonController move;
+    public Character myRb;
 
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
+    IEnumerator LiftWait()
+    {
+        yield return new WaitForSeconds(2.2f);
+        move.enabled = true;
+        myRb.enabled = true;
+    }
+
     void Update()
     {
+        // Pobieranie aktualnych informacji o animacji
+        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
         bool isRunning = animator.GetBool("isRunning");
         bool isWalking = animator.GetBool("isWalking");
         bool movePressed = Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("d") || Input.GetKey("s");
         bool runPressed = Input.GetKey("left shift");
         bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
-        bool liftPressed = Input.GetKeyDown(KeyCode.E); // Check for 'E' key press
+        bool liftPressed = Input.GetKeyDown(KeyCode.E);
 
-        // Check if currently in lifting animation state
-        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
+        isLifting = currentStateInfo.IsTag("Lifting");
+
+        if (isLifting)
         {
-            // Disable movement and jumping while lifting
             movePressed = false;
             runPressed = false;
             jumpPressed = false;
         }
 
-        if (liftPressed)
+        if (liftPressed && !isLifting)
         {
-            // Trigger the lifting animation
             animator.SetTrigger("isLifting");
+            move.enabled = false;
+            myRb.enabled = false;
+            StartCoroutine(LiftWait());
         }
 
-        // Jump logic (only allow if not lifting)
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
+        // Logika skoku 
+        if (!isLifting)
         {
             if (jumpPressed && !isJumping)
             {
@@ -62,8 +78,8 @@ public class AnimationStateController : MonoBehaviour
             }
         }
 
-        // Movement animations (only allow if not lifting)
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Lifting"))
+        // Animacje ruchu
+        if (!isLifting)
         {
             if (!isWalking && movePressed)
             {
@@ -84,6 +100,9 @@ public class AnimationStateController : MonoBehaviour
         }
     }
 }
+
+
+
 
 
 
