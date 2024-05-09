@@ -1,45 +1,111 @@
+using ECM2;
+using ECM2.Examples.PlanetWalk;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class animationStateController : MonoBehaviour
+public class AnimationStateController : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     Animator animator;
+    bool isJumping = false;
+    bool isLifting = false;
+    public ECM2.Examples.ThirdPerson.ThirdPersonController move;
+    public Character myRb;
+
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
+    IEnumerator LiftWait()
+    {
+        yield return new WaitForSeconds(2.2f);
+        move.enabled = true;
+        myRb.enabled = true;
+    }
+
     void Update()
     {
-        bool isrunning = animator.GetBool("isRunning");
+        // Pobieranie aktualnych informacji o animacji
+        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isRunning = animator.GetBool("isRunning");
         bool isWalking = animator.GetBool("isWalking");
         bool movePressed = Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("d") || Input.GetKey("s");
         bool runPressed = Input.GetKey("left shift");
-        //jeœli wciœniêty jest klawisz W,A,S,D
-        if (!isWalking && movePressed)
+        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        bool liftPressed = Input.GetKeyDown(KeyCode.E);
+
+        isLifting = currentStateInfo.IsTag("Lifting");
+
+        if (isLifting)
         {
-            //ustaw "isWalking" jako wartoœæ true
-            animator.SetBool("isWalking", true);
+            movePressed = false;
+            runPressed = false;
+            jumpPressed = false;
         }
-        //Jeœli gracz nie wciska przycisku W,A,S,D
-        if (isWalking && !movePressed)
+
+        if (liftPressed && !isLifting)
         {
-            //Ustaw wartoœæ "isWalking" jako false
-            animator.SetBool("isWalking", false);
+            animator.SetTrigger("isLifting");
+            move.enabled = false;
+            myRb.enabled = false;
+            StartCoroutine(LiftWait());
         }
-        //jeœli gracz wciska klawisz W,A,S,D i lewy shift
-        if (!isrunning && (movePressed && runPressed)) 
+
+        // Logika skoku 
+        if (!isLifting)
         {
-            //ustaw "isRunning" jako true
-            animator.SetBool("isRunning", true );        
+            if (jumpPressed && !isJumping)
+            {
+                isJumping = true;
+                if (isRunning)
+                {
+                    animator.SetTrigger("isRunningJump");
+                }
+                else if (isWalking)
+                {
+                    animator.SetTrigger("isWalkingJump");
+                }
+                else
+                {
+                    animator.SetTrigger("isIdleJump");
+                }
+            }
+            if (!Input.GetKey(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
-        //Jeœli gracz nie wciska przycisku W,A,S,D lub lewy shift
-        if (isrunning && (!movePressed || !runPressed))
+
+        // Animacje ruchu
+        if (!isLifting)
         {
-            animator.SetBool("isRunning", false);
+            if (!isWalking && movePressed)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            if (isWalking && !movePressed)
+            {
+                animator.SetBool("isWalking", false);
+            }
+            if (!isRunning && (movePressed && runPressed))
+            {
+                animator.SetBool("isRunning", true);
+            }
+            if (isRunning && (!movePressed || !runPressed))
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+
