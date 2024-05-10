@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine;
-
 public class ChangeTextOnTrigger : MonoBehaviour
 {
     public TextMesh textMesh; // Referencja do komponentu Text Mesh Pro
