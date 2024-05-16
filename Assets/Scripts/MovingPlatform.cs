@@ -2,62 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class Waypoints : MonoBehaviour
 {
 
-    public Vector3[] points;
-    public int point_number = 0;
-
-    private Vector3 current_target;
-
-    public float tolerance;
+    public GameObject[] waypoints;
+    public GameObject player;
+    int current = 0;
     public float speed;
-    public float delay_time;
-    private float delay_start;
-    public bool automatic;
-
-
-    void Start()
-    {
-        if (points.Length > 0)
-        {
-            current_target = points[0];
-        }
-        tolerance = speed * Time.deltaTime;
-    }
+    float WPradius = 1;
 
     void Update()
-    { 
-        if(transform.position != current_target)
-        {
-            MovePlatform();
-        }
-        else
-        {
-            UpdateTarget();
-        }
-    }
-
-    void MovePlatform()
     {
-        Vector3 heading = current_target - transform.position;
-        transform.position += (heading / heading.magnitude) * speed * Time.deltaTime;
-        if(heading.magnitude < tolerance)
+        if (Vector3.Distance(waypoints[current].transform.position, transform.position) < WPradius)
         {
-            transform.position = current_target;
-            delay_start = Time.time;
-        }
-    }
-    void UpdateTarget()
-    {
-        if (automatic)
-        {
-            if(Time.time - delay_start > delay_time)
+            current = Random.Range(0, waypoints.Length);
+            if (current >= waypoints.Length)
             {
-                NextPlatform();
+                current = 0;
             }
         }
+        transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
 
     }
 
+    void OnTriggerEnter(Collider n)
+    {
+        if (n.gameObject == player)
+        {
+            player.transform.parent = transform;
+        }
+    }
+    void OnTriggerExit(Collider n)
+    {
+        if (n.gameObject == player)
+        {
+            player.transform.parent = null;
+        }
+    }
 }
