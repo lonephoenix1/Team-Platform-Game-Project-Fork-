@@ -1807,6 +1807,14 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 2062623860}
+    - target: {fileID: 6965898758389443423, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+      propertyPath: _canEverJump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965898758389443423, guid: 26831da3a2ee08d4b80b93784f7cfb58, type: 3}
+      propertyPath: _canJumpWhileCrouching
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

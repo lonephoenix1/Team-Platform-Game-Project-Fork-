@@ -6,25 +6,34 @@ using UnityEngine;
 
 public class AnimationStateController : MonoBehaviour
 {
-    Animator animator; // Reference to the Animator component for managing character animations
-    bool isJumping = false; // Flag indicating whether the character is currently performing a jump
-    bool isLifting = false; // Flag indicating whether the character is holding or lifting an object
-    public ECM2.Examples.ThirdPerson.ThirdPersonController move; // Reference to the script controlling character movement
-    public Character myRb; // Reference to the character's Rigidbody component
+    Animator animator;
+    bool isJumping = false;
+    bool isLifting = false;
+    bool isGathering = false; // Flag to track if gathering action is in progress
+    bool isCrouching = false; // Flag to track if crouching action is in progress
+    bool isCrouchIdle = false; // Flag to track if crouch idle action is in progress
+    public ECM2.Examples.ThirdPerson.ThirdPersonController move;
+    public Character myRb;
 
     void Start()
     {
-        // Initialize animator reference
         animator = GetComponent<Animator>();
     }
 
     // Coroutine function for waiting before resuming movement after lifting an object
     IEnumerator LiftWait()
     {
-        // Wait for a specific duration before re-enabling character movement and physics
         yield return new WaitForSeconds(2.2f);
         move.enabled = true; // Re-enable character movement
         myRb.enabled = true; // Re-enable character physics
+        isGathering = false; // Reset gathering flag after the action is completed
+    }
+
+    // Coroutine function for enabling jump after a delay
+    IEnumerator EnableJumpAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        myRb.canEverJump = true;
     }
 
     void Update()
@@ -39,34 +48,42 @@ public class AnimationStateController : MonoBehaviour
         bool runPressed = Input.GetKey("left shift");
         bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
         bool liftPressed = Input.GetKeyDown(KeyCode.E);
+        bool crouchPressed = Input.GetKey(KeyCode.LeftControl) && movePressed;
+        bool crouchIdlePressed = Input.GetKey(KeyCode.LeftControl) && !movePressed;
+        bool crouchHeld = Input.GetKey(KeyCode.LeftControl);
 
         // Check if the character is currently holding or lifting an object
         isLifting = currentStateInfo.IsTag("Lifting");
 
-        // Block certain actions if the character is holding or lifting an object
-        if (isLifting)
+        // Check if the character is currently jumping (mid-air)
+        bool isMidAir = !myRb.IsGrounded();
+
+        // Block certain actions if the character is holding, lifting, or mid-air
+        if (isLifting || isMidAir)
         {
-            movePressed = false; // Prevent movement input
-            runPressed = false; // Prevent running input
-            jumpPressed = false; // Prevent jump input
+            movePressed = false;
+            runPressed = false;
+            jumpPressed = false;
+            crouchPressed = false;
+            crouchIdlePressed = false;
+            crouchHeld = false;
         }
 
         // Handle lifting an object
-        if (liftPressed && !isLifting)
+        if (liftPressed && !isLifting && !isGathering && !isMidAir)
         {
-            // Trigger the lifting animation and disable character movement and physics temporarily
             animator.SetTrigger("isLifting");
             move.enabled = false;
             myRb.enabled = false;
-            StartCoroutine(LiftWait()); // Start a coroutine to wait before resuming movement
+            isGathering = true; // Set gathering flag to prevent multiple triggers
+            StartCoroutine(LiftWait()); // Start coroutine to wait before resuming movement
         }
 
         // Handle character jumping
-        if (!isLifting)
+        if (!isLifting && !isMidAir)
         {
             if (jumpPressed && !isJumping)
             {
-                // Set the jumping flag to true and trigger the appropriate jump animation based on movement state
                 isJumping = true;
                 if (isRunning)
                 {
@@ -80,35 +97,78 @@ public class AnimationStateController : MonoBehaviour
                 {
                     animator.SetTrigger("isIdleJump");
                 }
+                myRb.Jump(); // Trigger the physical jump
             }
             if (!Input.GetKey(KeyCode.Space))
             {
-                isJumping = false; // Reset the jumping flag if the jump key is released
+                isJumping = false; // Reset jumping flag if jump key is released
             }
         }
 
-        // Handle movement animations
-        if (!isLifting)
+        // Handle crouching animations
+        if (!isLifting && !isJumping && !isMidAir)
         {
-            if (!isWalking && movePressed)
+            // Handle crouch walking
+            if (crouchPressed && !isCrouching)
             {
-                animator.SetBool("isWalking", true); // Enable walking animation
+                isCrouching = true;
+                animator.SetBool("isCrouching", true);
+                myRb.canEverJump = false; // Disable jumping while crouching
+                animator.SetBool("Moving", movePressed); // Set Moving based on player movement
             }
-            if (isWalking && !movePressed)
+            else if (!crouchHeld && isCrouching)
             {
-                animator.SetBool("isWalking", false); // Disable walking animation
+                isCrouching = false;
+                animator.SetBool("isCrouching", false);
+                animator.SetBool("Moving", false);
+                StartCoroutine(EnableJumpAfterDelay(0.4f)); // Enable jumping after 0.4 seconds
             }
-            if (!isRunning && (movePressed && runPressed))
+
+            // Handle crouch idle
+            if (crouchIdlePressed && !isCrouchIdle)
             {
-                animator.SetBool("isRunning", true); // Enable running animation
+                isCrouchIdle = true;
+                animator.SetBool("isCrouchIdle", true);
+                animator.SetBool("Moving", false);
+                myRb.canEverJump = false; // Disable jumping while crouch idle
             }
-            if (isRunning && (!movePressed || !runPressed))
+            else if (!crouchHeld && isCrouchIdle)
             {
-                animator.SetBool("isRunning", false); // Disable running animation
+                isCrouchIdle = false;
+                animator.SetBool("isCrouchIdle", false);
+  
+                animator.SetBool("Moving", movePressed); // Set Moving based on player movement
+                StartCoroutine(EnableJumpAfterDelay(0.4f)); // Enable jumping after 0.4 seconds
             }
         }
-    }
+
+
+        // Handle movement animations while not crouching
+        if (!isCrouching && !isCrouchIdle && !isMidAir && !isJumping)
+            {
+                if (!isWalking && movePressed)
+                {
+                    animator.SetBool("isWalking", true); // Enable walking animation
+                }
+                if (isWalking && !movePressed)
+                {
+                    animator.SetBool("isWalking", false); // Disable walking animation
+                }
+                if (!isRunning && (movePressed && runPressed))
+                {
+                    animator.SetBool("isRunning", true); // Enable running animation
+                }
+                if (isRunning && (!movePressed || !runPressed))
+                {
+                    animator.SetBool("isRunning", false); // Disable running animation
+                }
+            }
+        }
 }
+
+
+
+
 
 
 
